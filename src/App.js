@@ -2,8 +2,8 @@ import 'carbon-components/scss/globals/scss/styles.scss';
 import React, { Component } from 'react';
 import './App.css';
 import './app.scss';
-import { Content } from 'carbon-components-react';
-// import { Content, DataTable, TableContainer, Table, TableHead, TableRow, TableHeader, TableBody, TableCell} from 'carbon-components-react';
+// import { Content } from 'carbon-components-react';
+import { Content, DataTable, TableContainer, Table, TableHead, TableRow, TableHeader, TableBody, TableCell} from 'carbon-components-react';
 import Header from './components/Header';
 import axios from 'axios';
 
@@ -67,11 +67,11 @@ class App extends Component {
     // ];
     const headers = [
       {
-        key: 'vm',
+        key: 'vmname',
         header: 'VM',
       },
       {
-        key: 'status',
+        key: 'state',
         header: 'Status',
       },
       {
@@ -79,11 +79,11 @@ class App extends Component {
         header: 'OS',
       },
       {
-        key: 'ipAddress',
+        key: 'ipaddr',
         header: 'IP Address',
       },
       {
-        key: 'owner',
+        key: 'firstname',
         header: 'Owner',
       }
     ];
@@ -91,33 +91,15 @@ class App extends Component {
 
     console.log(projects);
 
+    // {projects.map((e, idx) => <li>key={idx}{e.vmname}</li>)}
     return (
       <>
         <Header />
         <Content>
           <h2>Project tables</h2>
-          <table>
-            <thead>
-              <tr>
-                {headers.map(e => <th>{e.header}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-                {projects.map(row => (
-                <tr>
-                  <td>{row.vmid}</td> 
-                  <td>{row.vmname}</td> 
-                  <td>{row.os}</td>
-                  <td>{row.ipAddress}</td>
-                  <td>{row.owner}</td>
-                  </tr>)
-                )}
-            </tbody>
-          </table>
-          
-         {/* <DataTable rows={projects} headers={headers}>
+         <DataTable rows={projects} headers={headers}>
             {({
-              projects,
+              rows,
               headers,
               getHeaderProps,
               getRowProps,
@@ -141,19 +123,24 @@ class App extends Component {
                       ))}
                     </TableRow>
                   </TableHead>
-                  {/* <TableBody>
-                    {projects.map((row) => (
-                      <TableRow key={row.id} {...getRowProps({ row })}>
+                  <TableBody>
+                    {rows.map((row) => (
+                      <TableRow 
+                        key={row.id} 
+                        {...getRowProps({ row })}>
+                          {/* {console.log(row)} */}
                         {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
+                          <>
+                            <TableCell key={cell.id}>{cell.value}</TableCell>
+                          </>
                         ))}
                       </TableRow>
                     ))}
-                  </TableBody> */}
-                {/* </Table>
+                  </TableBody>
+                </Table>
               </TableContainer>
             )}
-          </DataTable>   */}
+          </DataTable>  
         </Content>
       </>
     )
