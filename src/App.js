@@ -1,9 +1,23 @@
-import 'carbon-components/scss/globals/scss/styles.scss';
 import React, { Component } from 'react';
-import './App.css';
 import './app.scss';
-// import { Content } from 'carbon-components-react';
-import { Content, DataTable, TableContainer, Table, TableHead, TableRow, TableHeader, TableBody, TableCell} from 'carbon-components-react';
+import { 
+  Content, 
+  DataTable, 
+  TableContainer, 
+  Table, 
+  TableHead, 
+  TableRow, 
+  TableHeader, 
+  TableBody, 
+  TableCell, 
+  TableToolbar, 
+  TableToolbarSearch,
+  TableToolbarContent,
+  Button,
+  Grid,
+  Row,
+  Column
+} from 'carbon-components-react';
 import Header from './components/Header';
 import axios from 'axios';
 
@@ -13,11 +27,12 @@ class App extends Component {
     
     this.state = {
       projects: [],
+      value: ""
     }
   }
 
   // GET all the projects
-  componentDidMount(){
+  getVMs() { 
     axios.get("https://saturn-dev.pok.stglabs.ibm.com/api/projects/22/virtualmachines",
     { 
     headers: {
@@ -27,44 +42,32 @@ class App extends Component {
     )
       .then(response => {
         console.log(response)
-        this.setState({projects: response.data})
+        this.setState({projects: response.data});
       })
 
-      // .then(data => console.log("FROM THE SECOND THEN", data))
+      // .then(data => console.log(data))
       .catch(error => {
         console.error(error)
       })
   }
 
+  handleChange = e => {
+    if (e.target.value.length === 0) {
+      this.getVMs();
+      return;
+    }
+    this.setState({value: e.target.value});
+    let filteredProjects = this.state.projects.filter(p => p.vmname.includes(e.target.value));
+    console.log(filteredProjects);
+    this.setState({
+      projects: filteredProjects
+    });
+  }
+
+
 
 // render displays the datatable for projects
   render() {
-    // const rows = [
-    //   {
-    //     id: 'a',
-    //     vm: 'vm 1',
-    //     status: 'Disabled',
-    //     os: 'linux',
-    //     ipAddress: 47832,
-    //     owner: 'mike'
-    //   },
-    //   {
-    //     id: 'b',
-    //     vm: 'vm 2',
-    //     status: 'Starting',
-    //     os: 'linux',
-    //     ipAddress: 34324,
-    //     owner: 'sam'
-    //   },
-    //   {
-    //     id: 'c',
-    //     vm: 'vm 3',
-    //     status: 'Active',
-    //     os: 'linux',
-    //     ipAddress: 34324,
-    //     owner: 'eric'
-    //   },
-    // ];
     const headers = [
       {
         key: 'vmname',
@@ -91,24 +94,54 @@ class App extends Component {
 
     console.log(projects);
 
+    // collect what user has entered in the search bar
+  // const filteredProjects = (e) => {
+  //   this.setState({
+  //     value: e.target.value
+  //   })
+  // }
+
+  
+
+
+
     // {projects.map((e, idx) => <li>key={idx}{e.vmname}</li>)}
+
+    // {projects.filter(p => p.name === "kjk-transfer-test-1").map(filteredProjects => (
+    //   <li>
+    //     {filteredProjects.name}
+    //   </li>
+    // ))}
+
+    // let filteredProjects = projects.filter(p => p.vmname === "kjk-vm7")
+
     return (
-      <>
+     
+      <div>
         <Header />
         <Content>
-          <h2>Project tables</h2>
+          <Grid fullWidth>
+            <Row>
+              <Column>
+              <h2>Project tables</h2>
          <DataTable rows={projects} headers={headers}>
             {({
               rows,
               headers,
               getHeaderProps,
               getRowProps,
+              getToolbarProps,
               getTableProps,
               getTableContainerProps,
+              getBatchActionProps
             }) => (
-              <TableContainer
-                title="DataTable"
-                {...getTableContainerProps()}>
+              <TableContainer title="DataTable" {...getTableContainerProps()}>
+                  <TableToolbar {...getToolbarProps()} >
+                  <TableToolbarContent>
+                  <TableToolbarSearch />
+                  <Button>Refresh</Button>
+                </TableToolbarContent>
+                  </TableToolbar>
                 <Table {...getTableProps()} isSortable>
                   <TableHead>
                     <TableRow>
@@ -128,7 +161,6 @@ class App extends Component {
                       <TableRow 
                         key={row.id} 
                         {...getRowProps({ row })}>
-                          {/* {console.log(row)} */}
                         {row.cells.map((cell) => (
                           <>
                             <TableCell key={cell.id}>{cell.value}</TableCell>
@@ -141,8 +173,12 @@ class App extends Component {
               </TableContainer>
             )}
           </DataTable>  
+              </Column>
+            </Row>
+          </Grid>
+        
         </Content>
-      </>
+      </div>
     )
   }
 };
