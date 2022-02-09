@@ -3,24 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@carbon/charts": "^0.54.8",
-    "@carbon/charts-react": "^0.54.8",
+    "@carbon/grid": "^10.39.0",
     "@carbon/icons-react": "^10.22.0",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^0.25.0",
+    "axios": "^0.24.0",
     "carbon-components": "^10.25.0",
     "carbon-components-react": "^7.25.0",
     "carbon-icons": "^7.0.7",
-    "chart.js": "^3.7.0",
-    "cors": "^2.8.5",
-    "d3": "^7.3.0",
     "react": "^17.0.2",
-    "react-axios": "^2.0.5",
     "react-dom": "^17.0.2",
-    "react-scripts": "^5.0.0",
-    "web-vitals": "^2.1.4"
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "4.0.3",
+    "sass": "^1.29.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,9 +23,10 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+      "react-app"
+    ],"rules": {
+      "no-whitespace-before-property": "off"
+    }
   },
   "browserslist": {
     "production": [
@@ -47,8 +41,5 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.18",
-    "sass": "1.29.0",
-    "webpack": "^5.67.0"
   }
 }
